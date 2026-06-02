@@ -5,6 +5,9 @@ import '../../../../core/constants/app_constants.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/about_me_dialog.dart';
 import '../widgets/skill_dialog.dart';
+import '../widgets/language_dialog.dart';
+import '../widgets/profile_item_dialog.dart';
+import '../../../../core/database/database_helper.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -107,16 +110,100 @@ class ProfilePage extends StatelessWidget {
                 _buildSectionCard(
                   title: 'Work experience',
                   iconPath: 'asset/icons/Icon Work experience.svg',
-                  isEmpty: true,
-                  onActionPressed: () {},
-                  dataContent: null,
+                  isEmpty: provider.workExperienceList.isEmpty,
+                  onActionPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => ProfileItemDialog(
+                        title: 'Work Experience',
+                        tableName: DatabaseHelper.tableWorkExperience,
+                        initialItems: provider.workExperienceList,
+                      ),
+                    );
+                  },
+                  dataContent: provider.workExperienceList.isEmpty
+                      ? null
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: provider.workExperienceList
+                              .map(
+                                (item) => Padding(
+                                  padding: const EdgeInsets.only(top: 12.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.title,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.textColor,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        item.description,
+                                        style: const TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 14,
+                                          height: 1.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
                 ),
                 _buildSectionCard(
                   title: 'Education',
                   iconPath: 'asset/icons/Icon Education.svg',
-                  isEmpty: true,
-                  onActionPressed: () {},
-                  dataContent: null,
+                  isEmpty: provider.educationList.isEmpty,
+                  onActionPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => ProfileItemDialog(
+                        title: 'Education',
+                        tableName: DatabaseHelper.tableEducation,
+                        initialItems: provider.educationList,
+                      ),
+                    );
+                  },
+                  dataContent: provider.educationList.isEmpty
+                      ? null
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: provider.educationList
+                              .map(
+                                (item) => Padding(
+                                  padding: const EdgeInsets.only(top: 12.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.title,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.textColor,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        item.description,
+                                        style: const TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 14,
+                                          height: 1.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
                 ),
                 _buildSectionCard(
                   title: 'Skill',
@@ -167,16 +254,97 @@ class ProfilePage extends StatelessWidget {
                 _buildSectionCard(
                   title: 'Language',
                   iconPath: 'asset/icons/Icon Language.svg',
-                  isEmpty: true,
-                  onActionPressed: () {},
-                  dataContent: null,
+                  isEmpty: provider.languageList.isEmpty,
+                  onActionPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => const LanguageDialog(),
+                    );
+                  },
+                  dataContent: provider.languageList.isEmpty
+                      ? null
+                      : Padding(
+                          padding: const EdgeInsets.only(top: 12.0),
+                          child: Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: provider.languageList
+                                .map(
+                                  (language) => Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.itemColor,
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: AppColors.iconColor.withValues(
+                                          alpha: 0.1,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      language.name,
+                                      style: const TextStyle(
+                                        color: AppColors.textColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
                 ),
                 _buildSectionCard(
                   title: 'Appreciation',
                   iconPath: 'asset/icons/Icon Appreciation.svg',
-                  isEmpty: true,
-                  onActionPressed: () {},
-                  dataContent: null,
+                  isEmpty: provider.appreciationList.isEmpty,
+                  onActionPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => ProfileItemDialog(
+                        title: 'Appreciation',
+                        tableName: DatabaseHelper.tableAppreciation,
+                        initialItems: provider.appreciationList,
+                      ),
+                    );
+                  },
+                  dataContent: provider.appreciationList.isEmpty
+                      ? null
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: provider.appreciationList
+                              .map(
+                                (item) => Padding(
+                                  padding: const EdgeInsets.only(top: 12.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.title,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.textColor,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        item.description,
+                                        style: const TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 14,
+                                          height: 1.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
                 ),
 
                 const SizedBox(height: 16),

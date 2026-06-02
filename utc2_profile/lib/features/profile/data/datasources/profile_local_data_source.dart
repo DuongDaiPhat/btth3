@@ -1,6 +1,8 @@
 import '../../../../core/database/database_helper.dart';
 import '../models/about_me_model.dart';
 import '../models/skill_model.dart';
+import '../models/language_model.dart';
+import '../models/profile_item_model.dart';
 
 abstract class ProfileLocalDataSource {
   Future<List<AboutMeModel>> getAboutMeList();
@@ -9,6 +11,12 @@ abstract class ProfileLocalDataSource {
   Future<List<SkillModel>> getSkills();
   Future<void> addSkill(SkillModel skill);
   Future<void> clearSkills();
+  Future<List<LanguageModel>> getLanguages();
+  Future<void> addLanguage(LanguageModel language);
+  Future<void> clearLanguages();
+  Future<List<ProfileItemModel>> getProfileItems(String table);
+  Future<void> addProfileItem(String table, ProfileItemModel item);
+  Future<void> clearProfileItems(String table);
 }
 
 class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
@@ -55,6 +63,48 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
     final List<Map<String, dynamic>> maps = await db.query(DatabaseHelper.tableSkill);
     return List.generate(maps.length, (i) {
       return SkillModel.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<void> addLanguage(LanguageModel language) async {
+    final db = await databaseHelper.database;
+    await db.insert(DatabaseHelper.tableLanguage, language.toMap());
+  }
+
+  @override
+  Future<void> clearLanguages() async {
+    final db = await databaseHelper.database;
+    await db.delete(DatabaseHelper.tableLanguage);
+  }
+
+  @override
+  Future<List<LanguageModel>> getLanguages() async {
+    final db = await databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(DatabaseHelper.tableLanguage);
+    return List.generate(maps.length, (i) {
+      return LanguageModel.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<void> addProfileItem(String table, ProfileItemModel item) async {
+    final db = await databaseHelper.database;
+    await db.insert(table, item.toMap());
+  }
+
+  @override
+  Future<void> clearProfileItems(String table) async {
+    final db = await databaseHelper.database;
+    await db.delete(table);
+  }
+
+  @override
+  Future<List<ProfileItemModel>> getProfileItems(String table) async {
+    final db = await databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(table);
+    return List.generate(maps.length, (i) {
+      return ProfileItemModel.fromMap(maps[i]);
     });
   }
 }

@@ -11,7 +11,6 @@ class AboutMeDialog extends StatefulWidget {
 }
 
 class _AboutMeDialogState extends State<AboutMeDialog> {
-  final _titleController = TextEditingController();
   final _descController = TextEditingController();
 
   @override
@@ -19,14 +18,12 @@ class _AboutMeDialogState extends State<AboutMeDialog> {
     super.initState();
     final provider = context.read<ProfileProvider>();
     if (provider.aboutMeList.isNotEmpty) {
-      _titleController.text = provider.aboutMeList.first.title;
       _descController.text = provider.aboutMeList.first.description;
     }
   }
 
   @override
   void dispose() {
-    _titleController.dispose();
     _descController.dispose();
     super.dispose();
   }
@@ -65,22 +62,6 @@ class _AboutMeDialogState extends State<AboutMeDialog> {
             ),
             const SizedBox(height: 16),
             TextField(
-              controller: _titleController,
-              style: const TextStyle(color: AppColors.textColor),
-              decoration: InputDecoration(
-                labelText: 'Title',
-                labelStyle: const TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppConstants.borderRadius),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppConstants.borderRadius),
-                  borderSide: const BorderSide(color: AppColors.buttonColor),
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextField(
               controller: _descController,
               maxLines: 4,
               style: const TextStyle(color: AppColors.textColor),
@@ -110,10 +91,9 @@ class _AboutMeDialogState extends State<AboutMeDialog> {
                   elevation: 0,
                 ),
                 onPressed: () {
-                  final title = _titleController.text.trim();
                   final desc = _descController.text.trim();
-                  if (title.isNotEmpty && desc.isNotEmpty) {
-                    context.read<ProfileProvider>().updateAboutMe(title, desc);
+                  if (desc.isNotEmpty) {
+                    context.read<ProfileProvider>().updateAboutMe(desc);
                     Navigator.pop(context);
                   }
                 },
